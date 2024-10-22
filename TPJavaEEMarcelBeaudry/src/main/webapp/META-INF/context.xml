@@ -1,0 +1,16 @@
+<Context>
+
+  <Resource name="jdbc/cegep_gg_bd" 
+  			auth="Container" type="javax.sql.DataSource"
+               maxActive="20" maxIdle="5" maxWait="10000"
+               username="root" password="jnmpdtdmj13!" 
+               driverClassName="com.mysql.cj.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/cegep_gg_bd_tp?useSSL=false&amp;serverTimezone=UTC"/>
+               
+               
+   <Realm className="org.apache.catalina.realm.DataSourceRealm" debug="99"
+           dataSourceName="jdbc/cegep_gg_bd_tp" localDataSource="true"
+           userTable="user" userNameCol="id" userCredCol="mot_de_passe"
+		   userRoleTable="roles" roleNameCol="role"/>
+		   
+</Context>

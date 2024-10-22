@@ -1,0 +1,2 @@
+CREATE DATABASE  IF NOT EXISTS  cegep_gg_bd_tp;
+
