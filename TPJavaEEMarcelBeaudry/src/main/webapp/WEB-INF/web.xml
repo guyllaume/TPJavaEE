@@ -2,15 +2,57 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://jakarta.ee/xml/ns/jakartaee" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd" id="WebApp_ID" version="6.0">
   <display-name>TPJavaEEMarcelBeaudry</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    <welcome-file>default.htm</welcome-file>
+    <welcome-file>products.jsp</welcome-file>
   </welcome-file-list>
   <context-param>
   	<param-name>log4j-fichier</param-name>
   	<param-value>WEB-INF/demo/log4j.properties</param-value>
   </context-param>
+  
+  <security-role>
+      <role-name>ADMIN</role-name>
+  </security-role>
+  <security-role>
+      <role-name>MEMBRE</role-name>
+  </security-role>
+  
+  <resource-ref>
+    <description>DB Connection</description>
+    <res-ref-name>jdbc/cegep_gg_bd_tp</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+</resource-ref>
+  
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Admin Pages</web-resource-name>
+          <url-pattern>/admin/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>ADMIN</role-name>
+      </auth-constraint>
+  </security-constraint>
+  
+  <security-constraint>
+      <web-resource-collection>
+          <web-resource-name>Membre Pages</web-resource-name>
+          <url-pattern>/membre/*</url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+          <role-name>MEMBRE</role-name>
+      </auth-constraint>
+  </security-constraint>
+  
+  <login-config>
+      <auth-method>FORM</auth-method>
+      <form-login-config>
+          <form-login-page>/connexion.jsp</form-login-page>
+          <form-error-page>/connexion.jsp?error=true</form-error-page>
+      </form-login-config>
+  </login-config>
+  
+  <error-page>
+	  <exception-type>java.lang.Throwable</exception-type>
+	  <location>/err-globale.jsp</location>
+  </error-page>
 </web-app>
