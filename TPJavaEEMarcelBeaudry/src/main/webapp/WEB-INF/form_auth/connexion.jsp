@@ -6,14 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>CardRoyalty - Connexion</title>
+<link >
 </head>
 <body>
-    <%@ include file="WEB-INF/components/header.jsp" %>
+    <%@ include file="../components/header.jsp" %>
     <div class="main-container">
-        <%@ include file="WEB-INF/components/sidebar.jsp" %>
+        <%@ include file="../components/sidebar.jsp" %>
 		<div class="content">
 			<h1>Connexion</h1>
-			<form action="j_security_check" method="post">
+			<form action="${pageContext.request.contextPath}/j_security_check" method="post">
 				<label for="j_username">Courriel</label>
 				<input type="email" id="j_username" name="j_username" required>
 				<br>
@@ -23,8 +24,13 @@
 				<input type="submit" value="OK">
 				<input type="button" value="Créer un compte" onclick="location.href='<c:url value='/auth/signup' />';">
 			</form>
+		    <c:if test="${param.error != null}">
+		        <div class="error-message">
+		            Nom d'utilisateur ou mot de passe incorrect.
+		        </div>
+		    </c:if>
 		</div>
     </div>
-	<%@ include file="WEB-INF/components/footer.jsp" %>
+	<%@ include file="../components/footer.jsp" %>
 </body>
 </html>

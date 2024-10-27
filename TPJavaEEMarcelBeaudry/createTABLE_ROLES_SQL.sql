@@ -3,12 +3,11 @@ USE cegep_gg_bd_tp;
 DROP TABLE IF EXISTS `roles`;
 
 CREATE TABLE `roles` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `courriel` varchar(100) NOT NULL,
   `role` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`courriel`, `role`)
+);
 
 -- Insertion des roles
-INSERT INTO roles (role) VALUES
-    ('MEMBRE'),
-    ('ADMIN');
+INSERT INTO roles (courriel, role) VALUES
+    ('guyllaumebeaudry@gmail.com','ADMIN');

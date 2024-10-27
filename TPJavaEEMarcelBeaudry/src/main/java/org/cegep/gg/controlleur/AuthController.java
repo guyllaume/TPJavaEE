@@ -8,22 +8,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.cegep.gg.model.Role;
 import org.cegep.gg.model.User;
-import org.cegep.gg.service.RoleService;
 import org.cegep.gg.service.UserService;
 
 @WebServlet("/auth/*")
 public class AuthController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userService;
-	private RoleService roleService;
 	
 	@Resource(name="jdbc/cegep_gg_bd_tp")
 	private DataSource dataSource;
@@ -37,7 +33,6 @@ public class AuthController extends HttpServlet {
     public void init() throws ServletException {
     	super.init();
         userService = new UserService(dataSource);
-		roleService = new RoleService(dataSource);
     }
 
     @Override
@@ -77,8 +72,6 @@ public class AuthController extends HttpServlet {
 	}
 	
 	private void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        Role role = roleService.getRoleByDescription("MEMBRE");
         
 		String prenom = request.getParameter("prenom");
 		String nom = request.getParameter("nom");
@@ -188,7 +181,8 @@ public class AuthController extends HttpServlet {
 		
 		code_postal_client = code_postal_client.toUpperCase().replace(" ", "");
 		code_postal_livraison = code_postal_livraison.toUpperCase().replace(" ", "");
-		User user = new User(prenom, nom, date_de_naissance, telephone, email, password, role.getId(), adresse_client, ville_client, province_client, code_postal_client, pays_client, adresse_livraison, ville_livraison, province_livraison, code_postal_livraison, pays_livraison);
+		
+		User user = new User(prenom, nom, date_de_naissance, telephone, email, password, adresse_client, ville_client, province_client, code_postal_client, pays_client, adresse_livraison, ville_livraison, province_livraison, code_postal_livraison, pays_livraison);
 
 		if(userService.signup(user)) {
 			response.sendRedirect(request.getContextPath() + "/products.jsp");

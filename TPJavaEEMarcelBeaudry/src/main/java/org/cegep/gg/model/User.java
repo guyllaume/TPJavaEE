@@ -4,14 +4,12 @@ import java.time.LocalDate;
 
 public class User {
 
-	private int id;
 	private String prenom;
 	private String nom;
 	private LocalDate date_de_naissance;
 	private String telephone;
 	private String email;
 	private String password;
-	private int role_id;
 	
 	private String adresse_client;
 	private String ville_client;
@@ -35,7 +33,6 @@ public class User {
 			String telephone,
 			String email,
 			String password,
-			int role_id,
 			String adresse_client,
 			String ville_client,
 			String province_client,
@@ -52,7 +49,6 @@ public class User {
 		this.telephone = telephone;
 		this.email = email;
 		this.password = password;
-		this.role_id = role_id;
 		this.adresse_client = adresse_client;
 		this.ville_client = ville_client;
 		this.province_client = province_client;
@@ -66,12 +62,6 @@ public class User {
 	}
 	
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getPrenom() {
 		return prenom;
 	}
@@ -107,12 +97,6 @@ public class User {
 	}
 	public void setPassword(String password) {
 		this.password = password;
-	}
-	public int getRole_id() {
-		return role_id;
-	}
-	public void setRole_id(int role_id) {
-		this.role_id = role_id;
 	}
 	public String getAdresse_client() {
 		return adresse_client;

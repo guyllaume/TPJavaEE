@@ -15,7 +15,7 @@
         <a href="<c:url value='/panier'/>">Panier</a>
         <c:choose>
             <c:when test="${empty pageContext.request.userPrincipal}">
-                <a href="<c:url value='/connexion.jsp'/>">se connecter</a>
+                <a href="<c:url value='/login'/>">se connecter</a>
             </c:when>
             <c:otherwise>
                 <a href="<c:url value='/profile'/>">Bonjour, ${sessionScope.user.name}</a>

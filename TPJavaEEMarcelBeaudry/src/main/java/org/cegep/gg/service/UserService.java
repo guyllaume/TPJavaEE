@@ -18,7 +18,7 @@ public class UserService {
 	}
     
     public boolean signup(User user) {
-        String sql = "INSERT INTO user (role_id, prenom, nom, date_de_naissance, telephone, courriel, mot_de_passe,"
+        String sql = "INSERT INTO user (prenom, nom, date_de_naissance, telephone, courriel, mot_de_passe,"
         		+ " adresse, ville, province, code_postal, pays,"
         		+ " adresse_livraison, ville_livraison, province_livraison, code_postal_livraison, pays_livraison)"
         		+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -32,23 +32,22 @@ public class UserService {
             }
             
             // Set parameters
-            pstmt.setInt(1, user.getRole_id());
-			pstmt.setString(2, user.getPrenom());
-			pstmt.setString(3, user.getNom());
-			pstmt.setObject(4, user.getDate_de_naissance());
-			pstmt.setString(5, user.getTelephone());
-			pstmt.setString(6, user.getEmail());
-			pstmt.setString(7, user.getPassword());
-			pstmt.setString(8, user.getAdresse_client());
-			pstmt.setString(9, user.getVille_client());
-			pstmt.setString(10, user.getProvince_client());
-			pstmt.setString(11, user.getCode_postal_client());
-			pstmt.setString(12, user.getPays_client());
-			pstmt.setString(13, user.getAdresse_livraison());
-			pstmt.setString(14, user.getVille_livraison());
-			pstmt.setString(15, user.getProvince_livraison());
-			pstmt.setString(16, user.getCode_postal_livraison());
-			pstmt.setString(17, user.getPays_livraison());
+			pstmt.setString(1, user.getPrenom());
+			pstmt.setString(2, user.getNom());
+			pstmt.setObject(3, user.getDate_de_naissance());
+			pstmt.setString(4, user.getTelephone());
+			pstmt.setString(5, user.getEmail());
+			pstmt.setString(6, user.getPassword());
+			pstmt.setString(7, user.getAdresse_client());
+			pstmt.setString(8, user.getVille_client());
+			pstmt.setString(9, user.getProvince_client());
+			pstmt.setString(10, user.getCode_postal_client());
+			pstmt.setString(11, user.getPays_client());
+			pstmt.setString(12, user.getAdresse_livraison());
+			pstmt.setString(13, user.getVille_livraison());
+			pstmt.setString(14, user.getProvince_livraison());
+			pstmt.setString(15, user.getCode_postal_livraison());
+			pstmt.setString(16, user.getPays_livraison());
             
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
