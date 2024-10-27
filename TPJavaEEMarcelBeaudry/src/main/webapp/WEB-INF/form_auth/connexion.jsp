@@ -4,9 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>CardRoyalty - Connexion</title>
-<link >
+	<meta charset="UTF-8">
+	<title>CardRoyalty - Connexion</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>
     <%@ include file="../components/header.jsp" %>
