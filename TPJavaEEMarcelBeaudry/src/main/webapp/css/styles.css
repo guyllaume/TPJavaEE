@@ -80,6 +80,7 @@ a:hover{
 .main-container {
     flex: 1;
     display: flex;
+    background-color: #C0BEC4;
 }
 
 .footer {
