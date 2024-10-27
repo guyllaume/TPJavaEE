@@ -47,6 +47,15 @@ public class AuthController extends HttpServlet {
 		case "/signup":
 			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
 			break;
+		case "/membre/profile":
+			User user = userService.getUserByEmail(request.getUserPrincipal().getName());
+			if(user != null) {
+				request.setAttribute("user", user);
+			}else {
+				response.sendError(HttpServletResponse.SC_NOT_FOUND);
+			}
+			request.getRequestDispatcher("/member/profile.jsp").forward(request, response);
+			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
@@ -65,14 +74,55 @@ public class AuthController extends HttpServlet {
 		case "/signup":
 			signup(request, response);
 			break;
+		case "/membre/updateProfile":
+			updateUser(request, response);
+			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			break;
 		}
 	}
 	
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        Map<String, String> errors = new HashMap<>();
+		User user = validateUser(request, response, errors);
+
+		if(!errors.isEmpty()) {
+			request.getRequestDispatcher("/member/profile.jsp").forward(request, response);
+			return;
+		}
+		
+		if(userService.updateUser(user)) {
+			response.sendRedirect(request.getContextPath() + "/products.jsp");
+		}else {
+			errors.put("email", "Cet email existe déja");
+			request.setAttribute("errors", errors);
+			request.getRequestDispatcher("/member/profile.jsp").forward(request, response);
+		}
+    }
 	private void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
+
+        Map<String, String> errors = new HashMap<>();
+		User user = validateUser(request, response, errors);
+
+		if(!errors.isEmpty()) {
+			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
+			return;
+		}
+
+		if(userService.signup(user)) {
+			request.login(user.getEmail(), user.getPassword());  
+			response.sendRedirect(request.getContextPath() + "/products.jsp");
+		}else {
+			errors.put("email", "Cet email existe déja");
+			request.setAttribute("errors", errors);
+			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
+		}
+	}
+	
+	private User validateUser(HttpServletRequest request, HttpServletResponse response, Map<String, String> errors) throws ServletException, IOException {
+
 		String prenom = request.getParameter("prenom");
 		String nom = request.getParameter("nom");
 		LocalDate date_de_naissance = LocalDate.parse(request.getParameter("date_de_naissance"));
@@ -90,9 +140,6 @@ public class AuthController extends HttpServlet {
 		String province_livraison = request.getParameter("province_shipping");
 		String code_postal_livraison = request.getParameter("code_postal_shipping");
 		String pays_livraison = request.getParameter("pays_shipping");
-
-        // Create a map to store validation errors
-        Map<String, String> errors = new HashMap<>();
 		
 		if (prenom == null || prenom.trim().length() < 2 || prenom.trim().length() > 45) {
 			errors.put("prenom", "Le prenom doit contenir entre 2 et 45 caractères");
@@ -175,22 +222,13 @@ public class AuthController extends HttpServlet {
 		
 		if(!errors.isEmpty()) {
 			request.setAttribute("errors", errors);
-			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
-			return;
+			return null;
 		}
 		
 		code_postal_client = code_postal_client.toUpperCase().replace(" ", "");
 		code_postal_livraison = code_postal_livraison.toUpperCase().replace(" ", "");
 		
-		User user = new User(prenom, nom, date_de_naissance, telephone, email, password, adresse_client, ville_client, province_client, code_postal_client, pays_client, adresse_livraison, ville_livraison, province_livraison, code_postal_livraison, pays_livraison);
-
-		if(userService.signup(user)) {
-			response.sendRedirect(request.getContextPath() + "/products.jsp");
-		}else {
-			errors.put("email", "Cet email existe déja");
-			request.setAttribute("errors", errors);
-			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
-		}
+		return new User(prenom, nom, date_de_naissance, telephone, email, password, adresse_client, ville_client, province_client, code_postal_client, pays_client, adresse_livraison, ville_livraison, province_livraison, code_postal_livraison, pays_livraison);
 	}
 
 }

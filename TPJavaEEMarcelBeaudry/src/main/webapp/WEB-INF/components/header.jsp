@@ -20,7 +20,7 @@
                 <a href="<c:url value='/login'/>">Se Connecter</a>
             </c:when>
             <c:otherwise>
-                <a href="<c:url value='/profile'/>"> ${sessionScope.userDetails.prenom} ${sessionScope.userDetails.nom}</a>
+                <a href="<c:url value='/auth/membre/profile'/>"> ${sessionScope.userDetails.prenom} ${sessionScope.userDetails.nom}</a>
             </c:otherwise>
         </c:choose>
     </div>
