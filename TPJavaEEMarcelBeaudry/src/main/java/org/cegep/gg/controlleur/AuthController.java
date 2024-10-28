@@ -21,11 +21,11 @@ import org.cegep.gg.service.UserService;
 public class AuthController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserService userService;
+	private EmailService emailService;
 	
 	@Resource(name="jdbc/cegep_gg_bd_tp")
 	private DataSource dataSource;
 	
-	private EmailService emailService;
 
        
     public AuthController() {
