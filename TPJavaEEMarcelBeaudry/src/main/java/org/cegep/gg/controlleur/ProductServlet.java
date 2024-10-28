@@ -2,6 +2,8 @@ package org.cegep.gg.controlleur;
 
 import java.io.IOException;
 import java.util.List;
+
+import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,18 +17,14 @@ import javax.sql.DataSource;
 public class ProductServlet extends HttpServlet {
     private ProductService productService;
 
+    @Resource(name="jdbc/cegep_gg_bd_tp")
+    private DataSource dataSource;
     @Override
     public void init() throws ServletException {
+    	super.init();
         System.out.println("Initialisation de ProductServlet...");
         try {
-            DataSource dataSource = (DataSource) getServletContext().getAttribute("dataSource");
-            if (dataSource == null) {
-                throw new ServletException("DataSource est null dans ProductServlet");
-            }
             productService = new ProductService(dataSource);
-            // Test de connexion au démarrage
-            List<Product> testProducts = productService.getAllProducts();
-            System.out.println("Test initial : " + testProducts.size() + " produits trouvés");
         } catch (Exception e) {
             System.err.println("Erreur lors de l'initialisation du ProductServlet:");
             e.printStackTrace();
