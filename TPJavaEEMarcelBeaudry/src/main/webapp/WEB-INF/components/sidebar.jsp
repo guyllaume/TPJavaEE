@@ -9,6 +9,9 @@
                     </a>
                 </li>
             </c:forEach>
+            <li><a href="<c:url value='/'/>">TestCategory1</a></li>
+            <li><a href="<c:url value='/'/>">TestCategory2</a></li>
+            <li><a href="<c:url value='/'/>">TestCategory3</a></li>
         </ul>
     </nav>
 </div>

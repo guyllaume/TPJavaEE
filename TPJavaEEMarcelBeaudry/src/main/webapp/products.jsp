@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Admin-Dashboard</title>
+<title>CardRoyalty - Products</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
 </head>
 <body>

@@ -4,9 +4,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>CardRoyalty - Connexion</title>
-<link >
+	<meta charset="UTF-8">
+	<title>CardRoyalty - Connexion</title>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/stylesConnexion.css">
 </head>
 <body>
     <%@ include file="../components/header.jsp" %>
@@ -15,20 +16,24 @@
 		<div class="content">
 			<h1>Connexion</h1>
 			<form action="${pageContext.request.contextPath}/j_security_check" method="post">
+			    <div class="form-group">
 				<label for="j_username">Courriel</label>
 				<input type="email" id="j_username" name="j_username" required>
-				<br>
+				</div>
+			    <div class="form-group">
 				<label for="j_password">Mot de passe</label>
 				<input type="password" id="j_password" name="j_password" required>
-				<br>
-				<input type="submit" value="OK">
-				<input type="button" value="Créer un compte" onclick="location.href='<c:url value='/auth/signup' />';">
+				</div>
+				<div class="button-group">
+				<button type="submit" class="submit_btn">OK</button>
+				<button type="button" class="submit_btn" onclick="location.href='<c:url value='/auth/signup' />';">Créer un compte</button>
+				</div>
+			    <c:if test="${param.error != null}">
+			        <div class="error-message">
+			            Nom d'utilisateur ou mot de passe incorrect.
+			        </div>
+			    </c:if>
 			</form>
-		    <c:if test="${param.error != null}">
-		        <div class="error-message">
-		            Nom d'utilisateur ou mot de passe incorrect.
-		        </div>
-		    </c:if>
 		</div>
     </div>
 	<%@ include file="../components/footer.jsp" %>

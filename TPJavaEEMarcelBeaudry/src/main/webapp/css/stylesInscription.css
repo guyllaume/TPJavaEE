@@ -1,0 +1,62 @@
+@charset "UTF-8";
+h1{
+	font-size: 40px;
+	color: #6A2469;
+	margin-left: 50px;
+}
+
+.content{
+	flex: 1;
+	padding: 0 20px;
+}
+.grid-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* Two equal columns */
+    grid-template-rows: 1fr 1fr;     /* Two equal rows */
+    gap: 10px;                       /* Space between grid items */
+    height: 400px;                   /* Or whatever height you want */
+    color: #6A2469;
+}
+.form-group label{
+	display: inline-block;
+	width: 175px;
+	font-weight: bold;
+}
+
+.personalInfo {
+    grid-row: span 2;    /* Takes up 2 rows */
+    background: #e0e0e0; /* Just for visibility */
+    display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 20px;
+}
+
+.adresseInfo, .shippingInfo {
+    background: #f0f0f0; /* Just for visibility */
+    display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 20px;
+}
+
+.submit_btn{
+	display: block;
+	background-color: #6A2469;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 30px;
+	cursor: pointer;
+	font-size: 16px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+.errors{
+	color: #800000;
+	margin-left: 20px;
+	margin-top: 10px;
+}
