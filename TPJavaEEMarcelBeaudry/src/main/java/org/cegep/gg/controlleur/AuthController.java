@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.cegep.gg.model.User;
+import org.cegep.gg.service.EmailService;
 import org.cegep.gg.service.UserService;
 
 @WebServlet("/auth/*")
@@ -23,6 +24,9 @@ public class AuthController extends HttpServlet {
 	
 	@Resource(name="jdbc/cegep_gg_bd_tp")
 	private DataSource dataSource;
+	
+	private EmailService emailService;
+
        
     public AuthController() {
         super();
@@ -33,6 +37,7 @@ public class AuthController extends HttpServlet {
     public void init() throws ServletException {
     	super.init();
         userService = new UserService(dataSource);
+        emailService = new EmailService();
     }
 
     @Override
@@ -112,6 +117,7 @@ public class AuthController extends HttpServlet {
 		}
 
 		if(userService.signup(user)) {
+			emailService.sendConfirmationAccount(user.getEmail(), user.getPrenom() + " " + user.getNom());
 			request.login(user.getEmail(), user.getPassword());  
 			response.sendRedirect(request.getContextPath() + "/products.jsp");
 		}else {
