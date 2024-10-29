@@ -70,7 +70,4 @@
 		<exception-type>java.lang.Throwable</exception-type>
 		<location>/err-globale.jsp</location>
 	</error-page>
-	<listener>
-    <listener-class>org.cegep.gg.context.listener.ContextListener</listener-class>
-	</listener>
 </web-app>

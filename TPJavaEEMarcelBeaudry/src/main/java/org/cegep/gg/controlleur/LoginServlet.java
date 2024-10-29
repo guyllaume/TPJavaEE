@@ -19,7 +19,7 @@ public class LoginServlet extends HttpServlet {
     	if(request.isUserInRole("ADMIN")) {
 			response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
 		}else {
-			response.sendRedirect(request.getContextPath() + "/products.jsp");
+			response.sendRedirect(request.getContextPath() + "/index");
 		}
     }
 
