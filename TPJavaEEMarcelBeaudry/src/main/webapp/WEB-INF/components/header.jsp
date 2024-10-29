@@ -4,7 +4,7 @@
         <img alt="Logo Carte" src="<c:url value='${request.contextPath}/images/logo.jpeg'/>">
     </div>
     <div class="nav-links">
-        <a href="<c:url value='/accueil'/>">Accueil</a> - 
+        <a href="<c:url value='/index'/>">Accueil</a> - 
         <a href="<c:url value='/contact'/>">contacter nous</a> - 
         <a href="<c:url value='/fr'/>">fr</a>
     </div>

@@ -99,7 +99,7 @@ public class AuthController extends HttpServlet {
 		}
 		
 		if(userService.updateUser(user)) {
-			response.sendRedirect(request.getContextPath() + "/products.jsp");
+			response.sendRedirect(request.getContextPath() + "/index");
 		}else {
 			errors.put("email", "Cet email existe déja");
 			request.setAttribute("errors", errors);
@@ -119,7 +119,7 @@ public class AuthController extends HttpServlet {
 		if(userService.signup(user)) {
 			emailService.sendConfirmationAccount(user.getEmail(), user.getPrenom() + " " + user.getNom());
 			request.login(user.getEmail(), user.getPassword());  
-			response.sendRedirect(request.getContextPath() + "/products.jsp");
+			response.sendRedirect(request.getContextPath() + "/index");
 		}else {
 			errors.put("email", "Cet email existe déja");
 			request.setAttribute("errors", errors);
