@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="header">
     <div class="logo">
-        <a href="<c:url value='/'/>">LOGO</a>
+        <img alt="Logo Carte" src="<c:url value='${request.contextPath}/images/logo.jpeg'/>">
     </div>
     <div class="nav-links">
-        <a href="<c:url value='/accueil'/>">Accueil</a> - 
+        <a href="<c:url value='/index'/>">Accueil</a> - 
         <a href="<c:url value='/contact'/>">contacter nous</a> - 
         <a href="<c:url value='/fr'/>">fr</a>
     </div>
@@ -12,13 +12,15 @@
         Rechercher <input type="text">
     </div>
     <div class="panier">
-        <a href="<c:url value='/panier'/>">Panier</a>
+    <a href="<c:url value='/panier'/>">
+		<img alt="Panier" src="<c:url value='${request.contextPath}/images/panier.png'/>"/>
+	</a>
         <c:choose>
             <c:when test="${empty pageContext.request.userPrincipal}">
-                <a href="<c:url value='/login'/>">se connecter</a>
+                <a href="<c:url value='/login'/>">Se Connecter</a>
             </c:when>
             <c:otherwise>
-                <a href="<c:url value='/profile'/>">Bonjour, ${sessionScope.user.name}</a>
+                <a href="<c:url value='/auth/membre/profile'/>"> ${sessionScope.userDetails.prenom} ${sessionScope.userDetails.nom}</a>
             </c:otherwise>
         </c:choose>
     </div>

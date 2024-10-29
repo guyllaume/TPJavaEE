@@ -4,11 +4,12 @@
         <ul>
             <c:forEach var="category" items="${categories}" varStatus="status">
                 <li>
-                    <a href="<c:url value='/categorie/${category.id}'/>">
-                        ${category.name}
-                    </a>
+                    <a href="?category=${category}">${category}</a>
                 </li>
             </c:forEach>
+            <li><a href="<c:url value='/'/>">TestCategory1</a></li>
+            <li><a href="<c:url value='/'/>">TestCategory2</a></li>
+            <li><a href="<c:url value='/'/>">TestCategory3</a></li>
         </ul>
     </nav>
 </div>

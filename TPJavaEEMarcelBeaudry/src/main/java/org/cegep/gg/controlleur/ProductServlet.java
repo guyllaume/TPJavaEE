@@ -13,16 +13,18 @@ import org.cegep.gg.model.Product;
 import org.cegep.gg.service.ProductService;
 import javax.sql.DataSource;
 
-@WebServlet(urlPatterns = {"", "/index"})
+@WebServlet(name = "ProductServlet",urlPatterns = {"", "/index"})
 public class ProductServlet extends HttpServlet {
-    private ProductService productService;
+	private static final long serialVersionUID = 1L;
+
+	private ProductService productService;
 
     @Resource(name="jdbc/cegep_gg_bd_tp")
     private DataSource dataSource;
     @Override
     public void init() throws ServletException {
-    	super.init();
         System.out.println("Initialisation de ProductServlet...");
+    	super.init();
         try {
             productService = new ProductService(dataSource);
         } catch (Exception e) {

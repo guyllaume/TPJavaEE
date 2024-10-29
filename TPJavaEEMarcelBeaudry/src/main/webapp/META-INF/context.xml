@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
-    <Resource 
-        name="jdbc/cegep_gg_bd_tp"
-        auth="Container"
-        type="javax.sql.DataSource"
-        maxTotal="20"
-        maxIdle="5"
-        maxWaitMillis="-1"
-        username="cegepuser"
-        password="cegeppass"
-        driverClassName="com.mysql.cj.jdbc.Driver"
-        url="jdbc:mysql://localhost:3306/cegep_gg_bd_tp?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
-
-    <Realm 
-        className="org.apache.catalina.realm.DataSourceRealm"
-        dataSourceName="jdbc/cegep_gg_bd_tp"
-        localDataSource="true"
-        userTable="user"
-        userNameCol="courriel"
-        userCredCol="mot_de_passe"
-        userRoleTable="roles"
-        roleNameCol="role"/>
+    <Resource name="jdbc/cegep_gg_bd_tp"
+              auth="Container" 
+              type="javax.sql.DataSource"
+              maxTotal="20" 
+              maxIdle="5" 
+              maxWaitMillis="-1"
+              username="root" 
+              password="jnmpdtdmj13!"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/cegep_gg_bd_tp?useSSL=false&amp;serverTimezone=UTC&amp;connectTimeout=10000&amp;socketTimeout=10000"/>
+	          
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+           dataSourceName="jdbc/cegep_gg_bd_tp"
+           localDataSource="true"
+           userTable="user"
+           userNameCol="courriel"
+           userCredCol="mot_de_passe"
+           userRoleTable="roles"
+           roleNameCol="role"/>
 </Context>
