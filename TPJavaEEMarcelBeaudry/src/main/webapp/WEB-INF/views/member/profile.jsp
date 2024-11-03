@@ -10,9 +10,9 @@
 </head>
 <body>
 
-    <%@ include file="../WEB-INF/components/header.jsp" %>
+    <%@ include file="../../components/header.jsp" %>
     <div class="main-container">
-        <%@ include file="../WEB-INF/components/sidebar.jsp" %>
+        <%@ include file="../../components/sidebar.jsp" %>
         <div class="content">
 		<h1>Gérer - compte client</h1>
 		<form action="<c:url value='/auth/membre/updateProfile' />" method="post">
@@ -104,7 +104,7 @@
 		</div>
 		
     </div>
-	<%@ include file="../WEB-INF/components/footer.jsp" %>
+	<%@ include file="../../components/footer.jsp" %>
 	
 
 </body>

@@ -50,7 +50,7 @@ public class AuthController extends HttpServlet {
 		
 		switch(path) {
 		case "/signup":
-			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/inscription.jsp").forward(request, response);
 			break;
 		case "/membre/profile":
 			User user = userService.getUserByEmail(request.getUserPrincipal().getName());
@@ -59,7 +59,7 @@ public class AuthController extends HttpServlet {
 			}else {
 				response.sendError(HttpServletResponse.SC_NOT_FOUND);
 			}
-			request.getRequestDispatcher("/member/profile.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/member/profile.jsp").forward(request, response);
 			break;
 		default:
 			response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -94,7 +94,7 @@ public class AuthController extends HttpServlet {
 		User user = validateUser(request, response, errors);
 
 		if(!errors.isEmpty()) {
-			request.getRequestDispatcher("/member/profile.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/member/profile.jsp").forward(request, response);
 			return;
 		}
 		
@@ -103,7 +103,7 @@ public class AuthController extends HttpServlet {
 		}else {
 			errors.put("email", "Cet email existe déja");
 			request.setAttribute("errors", errors);
-			request.getRequestDispatcher("/member/profile.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/member/profile.jsp").forward(request, response);
 		}
     }
 	private void signup(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -112,7 +112,7 @@ public class AuthController extends HttpServlet {
 		User user = validateUser(request, response, errors);
 
 		if(!errors.isEmpty()) {
-			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/inscription.jsp").forward(request, response);
 			return;
 		}
 
@@ -123,7 +123,7 @@ public class AuthController extends HttpServlet {
 		}else {
 			errors.put("email", "Cet email existe déja");
 			request.setAttribute("errors", errors);
-			request.getRequestDispatcher("/inscription.jsp").forward(request, response);
+			request.getRequestDispatcher("/WEB-INF/views/inscription.jsp").forward(request, response);
 		}
 	}
 	

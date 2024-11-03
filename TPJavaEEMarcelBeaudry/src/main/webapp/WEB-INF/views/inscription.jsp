@@ -10,9 +10,9 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/stylesInscription.css">
 </head>
 <body>
-    <%@ include file="WEB-INF/components/header.jsp" %>
+    <%@ include file="../components/header.jsp" %>
     <div class="main-container">
-        <%@ include file="WEB-INF/components/sidebar.jsp" %>
+        <%@ include file="../components/sidebar.jsp" %>
 		<div class="content">
 		<h1>Création - compte client</h1>
 		<form action="<c:url value='/auth/signup' />" method="post">
@@ -103,6 +103,6 @@
 		</form>
 		</div>
     </div>
-	<%@ include file="WEB-INF/components/footer.jsp" %>
+	<%@ include file="../components/footer.jsp" %>
 </body>
 </html>
