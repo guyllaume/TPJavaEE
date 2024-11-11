@@ -75,4 +75,92 @@ public class ProductService {
             throw new ServletException("Erreur lors du test de connexion", e);
         }
     }
+
+	public void addCategory(String name, String description) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setString(2, description);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateCategory(int id, String name, String description) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setString(2, description);
+				ps.setInt(3, id);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void deleteCategory(int id) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "DELETE FROM categories WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setInt(1, id);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void addProduct(String name, String categoryId, String price, String imagePath) {
+		
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "INSERT INTO products (name, category_id, price, image_url) VALUES (?, ?, ?, ?)";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setInt(2, Integer.parseInt(categoryId));
+				ps.setDouble(3, Double.parseDouble(price));
+				ps.setString(4, imagePath);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void updateProduct(int productId, String name, String categoryId, String price, String imagePath) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "UPDATE products SET name = ?, category_id = ?, price = ?, image_url = ? WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setInt(2, Integer.parseInt(categoryId));
+				ps.setDouble(3, Double.parseDouble(price));
+				ps.setString(4, imagePath);
+				ps.setInt(5, productId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void deleteProduct(int productId) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "DELETE FROM products WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setInt(1, productId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }

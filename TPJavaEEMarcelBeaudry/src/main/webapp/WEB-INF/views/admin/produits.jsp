@@ -5,8 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin-Produit</title>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/stylesAdminGestion.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/stylesAdminGestion.css">
+<script>
+function editProduct(id, categorie, name, prix, image) {
+    document.getElementById("categorie").value = categorie;
+    document.getElementById("nom").value = name;
+    document.getElementById("prix").value = prix;
+    document.getElementById("image").value = "";
+    document.getElementById("form").action = "/admin/produit/edit/" + id;
+	document.getElementById("submit").value = "Modifier";
+}
+</script>
 </head>
 <body>
 
@@ -14,7 +24,7 @@
     <div class="content">
     	<div class="ajout">
     		<h1>Gestion de produit :</h1>
-    		<form action="<c:url value='/admin/produit/add' />">
+    		<form id="form" action="<c:url value='/admin/produit/add' />">
     			<div class="form-group">
 	    			<label for="categorie">Categorie</label>
 	    			<select id="categorie" name="categorie">
@@ -35,7 +45,7 @@
 	    			<label for="image">Image</label>
 	    			<input id="image" name="image" type="file" accept="image/*" required>
     			</div>
-    			<button type="submit">Enregistrer</button>
+    			<button id="submit" type="submit">Enregistrer</button>
     		</form>
     	</div>
         <div class="table-container">
@@ -54,7 +64,7 @@
 <%-- 	            			<td>${produit.prix}$</td> --%>
 <%-- 	            			<td>${produit.image}</td> --%>
 <!-- 	            			<td class="options"> -->
-<%-- 	            				<a href="<c:url value='/admin/produit/edit/${produit.id}'/>">Modifier</a> --%>
+<%-- 	            				<a href="javascript:void(0);" onclick="editProduct('${product.id}', '${product.categorieId}', '${product.name}', '${product.prix}', '${product.imagePath}')">Modifier</a> --%>
 <%-- 	            				<a href="<c:url value='/admin/produit/delete/${produit.id}'/>">Supprimer</a> --%>
 <!-- 	            			</td> -->
 <!-- 	            		</tr> -->
