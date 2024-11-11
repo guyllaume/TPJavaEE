@@ -17,7 +17,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
     	if(request.isUserInRole("ADMIN")) {
-			response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
+    		request.getRequestDispatcher("/WEB-INF/views/admin/dashboard.jsp").forward(request, response);
 		}else {
 			response.sendRedirect(request.getContextPath() + "/index");
 		}
