@@ -16,7 +16,6 @@
 	        <main class="product-grid">
 	            <c:forEach items="${products}" var="product">
 	                <div class="product-card">
-	                	${product.imageUrl}
 	                    <img src="${pageContext.request.contextPath}/uploads/${product.imageUrl}" alt="${product.name}" 
 	                         onerror="this.src='https://via.placeholder.com/200x200?text=Image+non+disponible'">
 	                    <h3>${product.name}</h3>
