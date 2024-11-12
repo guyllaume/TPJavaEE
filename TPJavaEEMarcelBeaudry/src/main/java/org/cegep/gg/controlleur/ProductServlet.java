@@ -53,6 +53,7 @@ public class ProductServlet extends HttpServlet {
 
             // Récupération des catégories
             System.out.println("Récupération des catégories...");
+            //Can be removed since filter does it
             List<Category> categories = productService.getAllCategories();
             System.out.println("Nombre de catégories récupérées : " + categories.size());
 

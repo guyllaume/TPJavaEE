@@ -105,13 +105,15 @@ public class AdminController extends HttpServlet {
     }
 
     private void displayCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Category> categories = productService.getAllCategories();
+        //Can be removed since filter does it
+    	List<Category> categories = productService.getAllCategories();
         request.setAttribute("categories", categories);
         request.getRequestDispatcher("/WEB-INF/views/admin/categories.jsp").forward(request, response);
     }
 
     private void displayProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> products = productService.getAllProducts();
+        //Can be removed since filter does it
         List<Category> categories = productService.getAllCategories();
 
         request.setAttribute("products", products);

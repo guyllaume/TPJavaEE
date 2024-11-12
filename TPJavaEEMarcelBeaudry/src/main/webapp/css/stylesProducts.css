@@ -3,6 +3,13 @@
 .content {
 	flex: 1;
 }
+.validation-message{
+	margin-left: 50px;
+	color: #6A2469;
+	font-weight: bold;
+	font-size: 20px;
+	font-style: italic;
+}
 .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -19,8 +26,10 @@
 }
 
 .product-card img {
-    max-width: 100%;
-    height: auto;
+    width: 250px;
+	height: 300px;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .price {
