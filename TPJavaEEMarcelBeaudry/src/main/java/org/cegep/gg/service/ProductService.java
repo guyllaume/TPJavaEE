@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+
+import org.cegep.gg.model.Category;
 import org.cegep.gg.model.Product;
 import jakarta.servlet.ServletException;
 
@@ -29,10 +31,9 @@ public class ProductService {
                 Product product = new Product();
                 product.setId(rs.getLong("id"));
                 product.setName(rs.getString("name"));
-                product.setDescription(rs.getString("description"));
                 product.setPrice(rs.getDouble("price"));
                 product.setImageUrl(rs.getString("image_url"));
-                product.setCategory(rs.getString("category"));
+                product.setCategory_id(rs.getLong("categories_id"));
                 products.add(product);
             }
             return products;
@@ -42,16 +43,20 @@ public class ProductService {
         }
     }
     
-    public List<String> getAllCategories() throws ServletException {
-        List<String> categories = new ArrayList<>();
-        String query = "SELECT DISTINCT category FROM products";
+    public List<Category> getAllCategories() throws ServletException {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM categories";
         
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
-            
+
             while (rs.next()) {
-                categories.add(rs.getString("category"));
+                Category category = new Category();
+                category.setId(rs.getLong("id"));
+                category.setName(rs.getString("name"));
+                category.setDescription(rs.getString("description"));
+                categories.add(category);
             }
             return categories;
             
@@ -75,4 +80,92 @@ public class ProductService {
             throw new ServletException("Erreur lors du test de connexion", e);
         }
     }
+
+	public void addCategory(String name, String description) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setString(2, description);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateCategory(int id, String name, String description) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "UPDATE categories SET name = ?, description = ? WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setString(2, description);
+				ps.setInt(3, id);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void deleteCategory(int id) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "DELETE FROM categories WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setInt(1, id);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void addProduct(String name, String categoryId, String price, String imagePath) {
+		
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "INSERT INTO products (name, categories_id, price, image_url) VALUES (?, ?, ?, ?)";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setInt(2, Integer.parseInt(categoryId));
+				ps.setDouble(3, Double.parseDouble(price));
+				ps.setString(4, imagePath);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void updateProduct(int productId, String name, String categoryId, String price, String imagePath) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "UPDATE products SET name = ?, categories_id = ?, price = ?, image_url = ? WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setString(1, name);
+				ps.setInt(2, Integer.parseInt(categoryId));
+				ps.setDouble(3, Double.parseDouble(price));
+				ps.setString(4, imagePath);
+				ps.setInt(5, productId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void deleteProduct(int productId) {
+		try (Connection conn = dataSource.getConnection()) {
+			String query = "DELETE FROM products WHERE id = ?";
+			try (PreparedStatement ps = conn.prepareStatement(query)) {
+				ps.setInt(1, productId);
+				ps.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 }
