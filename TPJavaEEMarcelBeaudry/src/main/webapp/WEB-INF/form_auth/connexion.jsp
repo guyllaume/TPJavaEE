@@ -1,6 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.cegep.gg.service.ProductService" %>
+<%@ page import="org.cegep.gg.model.Category" %>
+<%@ page import="javax.naming.InitialContext" %>
+<%@ page import="javax.sql.DataSource" %>
+
+<% 
+/*Creates a context to use JNDI to connect to the database: works similarly to context.xml  */
+    InitialContext ctx = new InitialContext();
+    DataSource dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/cegep_gg_bd_tp");
+    ProductService productService = new ProductService(dataSource);
+    List<Category> categories = productService.getAllCategories();
+    request.setAttribute("categories", categories);
+%>
 <!DOCTYPE html>
 <html>
 <head>

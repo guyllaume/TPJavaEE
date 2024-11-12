@@ -25,8 +25,8 @@ INSERT INTO `categories` (name, description) VALUES
 ('Magic: The Gathering', 'Cartes a jouer de Magic: The Gathering');
 
 INSERT INTO `products` (name, price, image_url, categories_id) VALUES
-('Carte Pokemon Dracaufeu', 299.99, '/images/dracaufeu.jpg', 1),
-('Carte Yu-Gi-Oh Dragon Blanc', 199.99, '/images/dragon-blanc.jpg', 2),
-('Carte Magic Black Lotus', 999.99, '/images/black-lotus.jpg', 3);
+('Carte Pokemon Dracaufeu', 299.99, 'dracaufeu.png', 1),
+('Carte Yu-Gi-Oh Dragon Blanc', 199.99, 'dragon-blanc.jpg', 2),
+('Carte Magic Black Lotus', 999.99, 'black-lotus.jfif', 3);
 
 COMMIT;

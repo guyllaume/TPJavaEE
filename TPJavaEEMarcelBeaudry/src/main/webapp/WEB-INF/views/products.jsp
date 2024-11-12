@@ -13,6 +13,10 @@
     <div class="main-container">
         <%@ include file="../components/sidebar.jsp" %>
         <div class="content">
+        	<c:if test="${validationMessage != null || validationMessage != ''}">
+        		<p class="validation-message">${validationMessage}</p>
+    			<% session.removeAttribute("validationMessage"); %>
+			</c:if>
 	        <main class="product-grid">
 	            <c:forEach items="${products}" var="product">
 	                <div class="product-card">
