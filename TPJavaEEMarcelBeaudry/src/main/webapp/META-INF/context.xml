@@ -19,4 +19,10 @@
            userCredCol="mot_de_passe"
            userRoleTable="roles"
            roleNameCol="role"/>
+          
+    <Resources>
+        <PreResources className="org.apache.catalina.webresources.DirResourceSet"
+                      base="C:/uploads/TPJavaEEMarcelBeaudry"
+                      webAppMount="/uploads" />
+    </Resources>
 </Context>

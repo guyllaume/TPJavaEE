@@ -16,10 +16,17 @@
 	        <main class="product-grid">
 	            <c:forEach items="${products}" var="product">
 	                <div class="product-card">
-	                    <img src="${product.imageUrl}" alt="${product.name}" 
+	                	${product.imageUrl}
+	                    <img src="${pageContext.request.contextPath}/uploads/${product.imageUrl}" alt="${product.name}" 
 	                         onerror="this.src='https://via.placeholder.com/200x200?text=Image+non+disponible'">
 	                    <h3>${product.name}</h3>
-	                    <p>${product.description}</p>
+	                    <p>
+			            <c:forEach items="${categories}" var="category">
+			                <c:if test="${category.id == product.category_id}">
+			                    ${category.description}
+			                </c:if>
+			            </c:forEach>
+	                    </p>
 	                    <p class="price">${product.price} $ </p>
 	                    <button class="add-to-cart" data-product-id="${product.id}">Ajouter au panier</button>
 	                </div>

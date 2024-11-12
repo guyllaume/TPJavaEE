@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+
+import org.cegep.gg.model.Category;
 import org.cegep.gg.model.Product;
 import jakarta.servlet.ServletException;
 
@@ -29,10 +31,9 @@ public class ProductService {
                 Product product = new Product();
                 product.setId(rs.getLong("id"));
                 product.setName(rs.getString("name"));
-                product.setDescription(rs.getString("description"));
                 product.setPrice(rs.getDouble("price"));
                 product.setImageUrl(rs.getString("image_url"));
-                product.setCategory(rs.getString("category"));
+                product.setCategory_id(rs.getLong("categories_id"));
                 products.add(product);
             }
             return products;
@@ -42,16 +43,20 @@ public class ProductService {
         }
     }
     
-    public List<String> getAllCategories() throws ServletException {
-        List<String> categories = new ArrayList<>();
-        String query = "SELECT DISTINCT category FROM products";
+    public List<Category> getAllCategories() throws ServletException {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT * FROM categories";
         
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
-            
+
             while (rs.next()) {
-                categories.add(rs.getString("category"));
+                Category category = new Category();
+                category.setId(rs.getLong("id"));
+                category.setName(rs.getString("name"));
+                category.setDescription(rs.getString("description"));
+                categories.add(category);
             }
             return categories;
             
@@ -120,7 +125,7 @@ public class ProductService {
 	public void addProduct(String name, String categoryId, String price, String imagePath) {
 		
 		try (Connection conn = dataSource.getConnection()) {
-			String query = "INSERT INTO products (name, category_id, price, image_url) VALUES (?, ?, ?, ?)";
+			String query = "INSERT INTO products (name, categories_id, price, image_url) VALUES (?, ?, ?, ?)";
 			try (PreparedStatement ps = conn.prepareStatement(query)) {
 				ps.setString(1, name);
 				ps.setInt(2, Integer.parseInt(categoryId));
@@ -136,7 +141,7 @@ public class ProductService {
 
 	public void updateProduct(int productId, String name, String categoryId, String price, String imagePath) {
 		try (Connection conn = dataSource.getConnection()) {
-			String query = "UPDATE products SET name = ?, category_id = ?, price = ?, image_url = ? WHERE id = ?";
+			String query = "UPDATE products SET name = ?, categories_id = ?, price = ?, image_url = ? WHERE id = ?";
 			try (PreparedStatement ps = conn.prepareStatement(query)) {
 				ps.setString(1, name);
 				ps.setInt(2, Integer.parseInt(categoryId));

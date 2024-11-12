@@ -3,21 +3,19 @@ package org.cegep.gg.model;
 public class Product {
     private Long id;
     private String name;
-    private String description;
     private double price;
     private String imageUrl;
-    private String category;
+    private Long category_id;
 
     // Constructeur
     public Product() {}
 
-    public Product(Long id, String name, String description, double price, String imageUrl, String category) {
+    public Product(Long id, String name, String description, double price, String imageUrl, Long category_id) {
         this.id = id;
         this.name = name;
-        this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
-        this.category = category;
+        this.category_id = category_id;
     }
 
     // Getters et Setters
@@ -27,8 +25,6 @@ public class Product {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
     
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
@@ -36,6 +32,6 @@ public class Product {
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    public Long getCategory_id() { return category_id; }
+    public void setCategory_id(Long category_id) { this.category_id = category_id; }
 }

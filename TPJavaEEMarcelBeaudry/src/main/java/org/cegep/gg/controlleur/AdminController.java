@@ -2,6 +2,7 @@ package org.cegep.gg.controlleur;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +18,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.sql.DataSource;
 
+import org.cegep.gg.model.Category;
 import org.cegep.gg.model.Product;
 import org.cegep.gg.service.ProductService;
 
+@MultipartConfig
 @WebServlet("/admin/*")
 public class AdminController extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -102,14 +105,14 @@ public class AdminController extends HttpServlet {
     }
 
     private void displayCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<String> categories = productService.getAllCategories();
+        List<Category> categories = productService.getAllCategories();
         request.setAttribute("categories", categories);
         request.getRequestDispatcher("/WEB-INF/views/admin/categories.jsp").forward(request, response);
     }
 
     private void displayProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> products = productService.getAllProducts();
-        List<String> categories = productService.getAllCategories();
+        List<Category> categories = productService.getAllCategories();
 
         request.setAttribute("products", products);
         request.setAttribute("categories", categories);
@@ -175,14 +178,21 @@ public class AdminController extends HttpServlet {
 	     Part filePart = request.getPart("image");
 	     if (filePart != null && filePart.getSize() > 0) {
 	         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-	         String uploadDir = "/path/to/upload/directory"; // Define your image upload path
+	         String uploadDir = "C:\\uploads\\TPJavaEEMarcelBeaudry";
+	         File uploadDirectory = new File(uploadDir);
+	         if (!uploadDirectory.exists()) {
+	             uploadDirectory.mkdirs();
+	         }
 	         File uploadFile = new File(uploadDir, fileName);
+	         System.out.println("uploadFile: " + uploadFile);
+	         System.out.println("uploadFile.exists(): " + uploadFile.exists());
+	         System.out.println("uploadDir: " + uploadDir);
 	         
 	         // Save the uploaded file
 	         try (InputStream input = filePart.getInputStream()) {
 	             Files.copy(input, uploadFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 	         }
-	         return uploadFile.getAbsolutePath();
+	         return fileName;
 	     }
 	     return null; // or return existing image path if no new image is uploaded
 	 }
