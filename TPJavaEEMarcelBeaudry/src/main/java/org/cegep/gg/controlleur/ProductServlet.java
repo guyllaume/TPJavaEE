@@ -9,6 +9,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.cegep.gg.model.Category;
 import org.cegep.gg.model.Product;
 import org.cegep.gg.service.ProductService;
 import javax.sql.DataSource;
@@ -51,7 +53,7 @@ public class ProductServlet extends HttpServlet {
 
             // Récupération des catégories
             System.out.println("Récupération des catégories...");
-            List<String> categories = productService.getAllCategories();
+            List<Category> categories = productService.getAllCategories();
             System.out.println("Nombre de catégories récupérées : " + categories.size());
 
             // Définition des attributs
