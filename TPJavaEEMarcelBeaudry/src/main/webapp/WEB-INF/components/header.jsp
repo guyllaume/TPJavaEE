@@ -19,18 +19,21 @@
 		        Rechercher <input type="text">
 		    </div>
 		    <div class="panier">
-		    <a href="<c:url value='/panier'/>">
-				<img alt="Panier" src="<c:url value='${request.contextPath}/images/panier.png'/>"/>
-			</a>
-	        <c:choose>
-	            <c:when test="${empty pageContext.request.userPrincipal}">
-	                <a href="<c:url value='/login'/>">Se Connecter</a>
-	            </c:when>
-	            <c:otherwise>
-	                <a href="<c:url value='/auth/membre/profile'/>"> ${sessionScope.userDetails.prenom} ${sessionScope.userDetails.nom}</a>
-	            </c:otherwise>
-	        </c:choose>
-		    </div>
+                <a href="${pageContext.request.contextPath}/cart" class="cart-link">
+                    <img alt="Panier" src="${pageContext.request.contextPath}/images/panier.png">
+                    <span class="cart-count">${not empty sessionScope.cart ? sessionScope.cart.itemCount : 0}</span>
+                </a>
+                <c:choose>
+                    <c:when test="${empty pageContext.request.userPrincipal}">
+                        <a href="${pageContext.request.contextPath}/login">Se Connecter</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/auth/membre/profile">
+                            ${sessionScope.userDetails.prenom} ${sessionScope.userDetails.nom}
+                        </a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
 		</c:otherwise>
     </c:choose>
 </div>

@@ -6,10 +6,10 @@
               maxTotal="20" 
               maxIdle="5" 
               maxWaitMillis="-1"
-              username="root" 
-              password="jnmpdtdmj13!"
+              username="cegepuser" 
+              password="cegeppass"
               driverClassName="com.mysql.cj.jdbc.Driver"
-              url="jdbc:mysql://localhost:3306/cegep_gg_bd_tp?useSSL=false&amp;serverTimezone=UTC&amp;connectTimeout=10000&amp;socketTimeout=10000"/>
+              url="jdbc:mysql://localhost:3306/cegep_gg_bd_tp?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC"/>
 	          
     <Realm className="org.apache.catalina.realm.DataSourceRealm"
            dataSourceName="jdbc/cegep_gg_bd_tp"

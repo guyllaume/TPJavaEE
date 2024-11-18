@@ -8,13 +8,47 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 
 @WebListener("context listener")
 public class ContextListener implements ServletContextListener {
 
     @Override
+    public void contextInitialized(ServletContextEvent event) {
+        System.out.println("=== Démarrage de l'initialisation du contexte ===");
+        ServletContext sc = event.getServletContext();
+        
+        try {
+            // Configuration JNDI
+            InitialContext initContext = new InitialContext();
+            Context envContext = (Context) initContext.lookup("java:comp/env");
+            DataSource dataSource = (DataSource) envContext.lookup("jdbc/cegep_gg_bd_tp");
+            
+            // Test de la connexion
+            try (var conn = dataSource.getConnection()) {
+                System.out.println("Test de connexion réussi!");
+                System.out.println("Connected to: " + conn.getMetaData().getURL());
+                System.out.println("Using user: " + conn.getMetaData().getUserName());
+            }
+            
+            // Stockage dans le contexte
+            sc.setAttribute("dataSource", dataSource);
+            System.out.println("DataSource stocké dans le contexte ServletContext");
+            
+        } catch (Exception e) {
+            System.err.println("!!! ERREUR CRITIQUE lors de l'initialisation !!!");
+            System.err.println("Message d'erreur: " + e.getMessage());
+            e.printStackTrace();
+        }
+        System.out.println("=== Fin de l'initialisation du contexte ===");
+    }
+
+    @Override
     public void contextDestroyed(ServletContextEvent event) {
         ServletContext sc = event.getServletContext();
+        sc.removeAttribute("dataSource");
 
         // Désenregistrement des drivers
         Enumeration<Driver> drivers = DriverManager.getDrivers();
