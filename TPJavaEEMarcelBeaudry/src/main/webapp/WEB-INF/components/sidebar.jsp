@@ -4,7 +4,7 @@
         <ul>
             <c:forEach var="category" items="${categories}" varStatus="status">
                 <li>
-                    <a href="?category=${category}">${category.name}</a>
+                    <a href="${pageContext.request.contextPath}/products?categoryId=${category.id}">${category.name}</a>
                 </li>
             </c:forEach>
         </ul>
