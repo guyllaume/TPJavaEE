@@ -199,7 +199,6 @@
 </head>
 <body>
     <%@ include file="../components/header.jsp" %>
-    
     <div class="main-container">
         <div class="cart-container">
             <div class="cart-header">
@@ -208,7 +207,6 @@
                     <button class="btn btn-danger" onclick="clearCart()">Vider le panier</button>
                 </c:if>
             </div>
-
             <c:choose>
                 <c:when test="${empty cart.items}">
                     <div class="empty-cart">
@@ -230,7 +228,7 @@
                         </thead>
                         <tbody>
                             <c:forEach items="${cart.items}" var="item">
-                                <tr class="cart-item">
+                                <tr class="cart-item" data-product-id="${item.product.id}">
                                     <td>
                                         <img src="${pageContext.request.contextPath}/uploads/${item.product.imageUrl}" 
                                              alt="${item.product.name}"
@@ -245,27 +243,26 @@
                                     <td>
                                         <input type="number" 
                                                class="quantity-input" 
+                                               id="quantity-${item.product.id}" 
                                                value="${item.quantity}" 
-                                               min="1"
-                                               onchange="updateQuantity(${item.product.id}, this.value)">
+                                               min="1">
+                                        <button class="btn btn-primary" onclick="updateQuantity(${item.product.id}, document.getElementById('quantity-${item.product.id}').value)">Modifier</button>
                                     </td>
                                     <td>
                                         <fmt:formatNumber value="${item.totalPrice}" type="currency" currencySymbol="$"/>
                                     </td>
                                     <td>
-                                        <button class="btn btn-danger" onclick="removeFromCart(${item.product.id})">
+                                        <button class="btn btn-danger" onclick="removeFromCart('${item.product.id}')">
                                             Supprimer
                                         </button>
                                     </td>
                                 </tr>
-                            </c:forEach>
+                            </c:forEach> <!-- Ensure this tag is properly closed -->
                         </tbody>
                     </table>
-
                     <div class="cart-summary">
                         <h2>Total : <fmt:formatNumber value="${cart.total}" type="currency" currencySymbol="$"/></h2>
                     </div>
-
                     <div class="cart-buttons">
                         <a href="${pageContext.request.contextPath}/" class="btn btn-secondary">
                             Continuer mes achats
@@ -278,43 +275,77 @@
             </c:choose>
         </div>
     </div>
-
     <%@ include file="../components/footer.jsp" %>
 
     <script>
-        function updateQuantity(productId, quantity) {
-            fetch('${pageContext.request.contextPath}/cart', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                body: `action=update&productId=${productId}&quantity=${quantity}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.reload();
-                } else {
-                    alert('Erreur : ' + data.error);
-                }
-            });
-        }
+	    function updateQuantity(productId, quantity) {
+	        if (!quantity || quantity < 1) {
+	            alert('Quantité invalide. Veuillez saisir une quantité positive.');
+	            return;
+	        }
+	        let params = new URLSearchParams();
+	        params.append('action', 'update');
+	        params.append('productId', productId);
+	        params.append('quantity', quantity);
+	
+	        fetch('${pageContext.request.contextPath}/cart', {
+	            method: 'POST',
+	            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+	            body: params
+	        })
+	        .then(response => response.json())
+	        .then(data => {
+	            if (data.success) {
+	                alert('Quantité mise à jour avec succès');
+	                window.location.reload(); // Recharger la page pour voir les modifications
+	            } else {
+	                alert('Erreur : ' + data.error);
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Erreur lors de la mise à jour de la quantité :', error);
+	            alert('Erreur lors de la mise à jour de la quantité');
+	        });
+	    }
 
         function removeFromCart(productId) {
+        	console.log("Trying to remove product with ID:", productId);
             if (confirm('Voulez-vous vraiment retirer ce produit du panier ?')) {
+                if (!productId) {
+                    alert('Erreur : ID du produit manquant');
+                    return;
+                }
+                let params = new URLSearchParams();
+                params.append('action', 'remove');
+                params.append('productId', productId);
+                
                 fetch('${pageContext.request.contextPath}/cart', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                    body: `action=remove&productId=${productId}`
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: params
                 })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
+                        const row = document.querySelector(`tr[data-product-id="${productId}"]`);
+                        if (row) {
+                            row.remove(); 
+                        }
+                        alert('Produit retiré avec succès');
                         window.location.reload();
                     } else {
                         alert('Erreur : ' + data.error);
                     }
+                })
+                .catch(error => {
+                    console.error('Erreur lors de la suppression du produit :', error);
+                    alert('Erreur lors de la suppression du produit');
                 });
             }
         }
+
 
         function clearCart() {
             if (confirm('Voulez-vous vraiment vider votre panier ?')) {
@@ -336,7 +367,7 @@
 
         function checkout() {
             // À implémenter plus tard
-            alert('La fonction de paiement sera bientôt disponible !');
+            alert('La fonction de paiement non disponible pour le moment');
         }
     </script>
 </body>
