@@ -44,7 +44,8 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Membre Pages</web-resource-name>
-			<url-pattern>/membre/*</url-pattern>
+			<url-pattern>/member/*</url-pattern>
+			<url-pattern>/checkout/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>MEMBRE</role-name>
@@ -69,6 +70,7 @@
 	<session-config>
 	    <session-timeout>30</session-timeout>
 	</session-config>
+	
 
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
