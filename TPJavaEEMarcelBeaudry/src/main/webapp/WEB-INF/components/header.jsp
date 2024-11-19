@@ -12,11 +12,15 @@
 		<c:otherwise>
 		    <div class="nav-links">
 		        <a href="<c:url value='/index'/>">Accueil</a> - 
-		        <a href="<c:url value='/contact'/>">contacter nous</a> - 
+		        <a href="<c:url value='/contact'/>">contacter nous</a> 
 		        <a href="<c:url value='/fr'/>">fr</a>
 		    </div>
 		    <div class="search">
-		        Rechercher <input type="text">
+		        <form action="${pageContext.request.contextPath}/search" method="GET">
+				    <input type="text" name="query" placeholder="Rechercher des produits...">
+				    <button type="submit">Rechercher</button>
+				</form>
+
 		    </div>
 		    <div class="panier">
                 <a href="${pageContext.request.contextPath}/cart" class="cart-link">

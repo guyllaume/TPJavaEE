@@ -6,6 +6,7 @@ public class Product {
     private double price;
     private String imageUrl;
     private Long category_id;
+    private String categoryDescription;
 
     // Constructeur
     public Product() {}
@@ -34,4 +35,7 @@ public class Product {
     
     public Long getCategory_id() { return category_id; }
     public void setCategory_id(Long category_id) { this.category_id = category_id; }
+    
+    public String getCategoryDescription() { return categoryDescription; }
+    public void setCategoryDescription(String categoryDescription) { this.categoryDescription = categoryDescription; }
 }
