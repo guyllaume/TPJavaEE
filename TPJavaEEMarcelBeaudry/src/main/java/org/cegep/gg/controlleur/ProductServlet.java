@@ -15,7 +15,7 @@ import org.cegep.gg.model.Product;
 import org.cegep.gg.service.ProductService;
 import javax.sql.DataSource;
 
-@WebServlet(name = "ProductServlet",urlPatterns = {"", "/index"})
+@WebServlet(name = "ProductServlet", urlPatterns = {"/", "/index", "/home"})
 public class ProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
