@@ -94,6 +94,7 @@
 
                 // Mettre à jour l'icône du panier ici si vous avez un élément pour cela
                 updateCartCounter(data.cartSize);
+                window.location.reload();
             } else {
                 alert('Erreur : ' + data.error);
             }
@@ -105,7 +106,7 @@
     }
 
     function updateCartCounter(size) {
-        const cartCounter = document.getElementById('cart-counter'); // Assurez-vous d'avoir un élément avec cet ID
+        const cartCounter = document.getElementById('cart-counter'); 
         if (cartCounter) {
             cartCounter.textContent = size;
         }
