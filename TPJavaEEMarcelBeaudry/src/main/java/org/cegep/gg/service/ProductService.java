@@ -65,6 +65,29 @@ public class ProductService {
         }
     }
     
+    public Product getProductById(long id) throws SQLException {
+        String query = "SELECT * FROM products WHERE id = ?";
+        
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+            
+            ps.setLong(1, id);
+            
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Product product = new Product();
+                    product.setId(rs.getLong("id"));
+                    product.setName(rs.getString("name"));
+                    product.setPrice(rs.getDouble("price"));
+                    product.setImageUrl(rs.getString("image_url"));
+                    product.setCategory_id(rs.getLong("categories_id"));
+                    return product;
+                }
+                return null;
+            }
+        }
+    }
+    
     public void testConnection() throws ServletException {
         try (Connection conn = dataSource.getConnection()) {
             System.out.println("Test de connexion réussi !");
