@@ -86,7 +86,43 @@ public class CartController extends HttpServlet {
                     System.out.println("Produit " + productId + " ajouté au panier");
                     break;
 
-                // Répétez des contrôles similaires pour les cas "update" et "remove" si nécessaire
+                case "remove":
+                    productIdStr = request.getParameter("productId");
+                    System.out.println("Product ID received for removal: " + productIdStr);  // Log pour déboguer
+                    if (productIdStr == null || productIdStr.trim().isEmpty()) {
+                        throw new IllegalArgumentException("L'ID du produit ne peut pas être vide.");
+                    }
+
+                    productId = Long.parseLong(productIdStr);
+                    cartService.removeFromCart(cart, productId);
+
+                    jsonResponse.put("success", true);
+                    jsonResponse.put("message", "Produit retiré du panier");
+                    break;
+
+                    
+                case "clear":
+                    cartService.clearCart(cart);
+
+                    jsonResponse.put("success", true);
+                    jsonResponse.put("message", "Panier vidé");
+                    break;
+                    
+                case "update":
+                    productIdStr = request.getParameter("productId");
+                    String newQuantityStr = request.getParameter("quantity");
+                    if (productIdStr == null || productIdStr.trim().isEmpty() ||
+                        newQuantityStr == null || newQuantityStr.trim().isEmpty()) {
+                        throw new IllegalArgumentException("L'ID du produit et la quantité ne peuvent pas être vides.");
+                    }
+                    productId = Long.parseLong(productIdStr);
+                    int newQuantity = Integer.parseInt(newQuantityStr);
+                    cartService.updateQuantity(cart, productId, newQuantity);
+                    jsonResponse.put("success", true);
+                    jsonResponse.put("message", "Quantité mise à jour pour le produit " + productId);
+                    break;
+
+                    
 
                 default:
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
