@@ -19,7 +19,7 @@
 				    <div class="product-card">
 				        <img src="${pageContext.request.contextPath}/uploads/${product.imageUrl}" alt="${product.name}">
 				        <h3>${product.name}</h3>
-				        <p>${product.categoryDescription}</p>  <!-- Affichage de la description de la catégorie -->
+				        <p>${product.categoryDescription}</p> 
 				        <p class="price">${product.price} $ </p>
 				        <button class="add-to-cart" data-product-id="${product.id}">Ajouter au panier</button>
 				    </div>

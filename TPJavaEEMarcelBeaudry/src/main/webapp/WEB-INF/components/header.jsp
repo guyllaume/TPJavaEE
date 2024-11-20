@@ -17,7 +17,7 @@
 		    </div>
 		    <div class="search">
 		        <form action="${pageContext.request.contextPath}/search" method="GET">
-				    <input type="text" name="query" placeholder="Rechercher des produits...">
+				    <input type="text" name="query" placeholder="Rechercher des produits..." >
 				    <button type="submit">Rechercher</button>
 				</form>
 
