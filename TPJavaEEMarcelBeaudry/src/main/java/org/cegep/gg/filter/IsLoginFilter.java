@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+//Filtre obligatoire du au Form-Base Authentication. Il permet d'enregistrer les informations de l'utilisateur connecté dans la session peut importe par quel chemin l'utilisateur est entré.
 @WebFilter("/*")
 public class IsLoginFilter extends HttpFilter implements Filter {
 	private static final long serialVersionUID = 1L;
@@ -30,15 +31,13 @@ public class IsLoginFilter extends HttpFilter implements Filter {
     private DataSource dataSource;
        
 
-	public void destroy() {
-	}
-
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession();
         Principal userPrincipal = req.getUserPrincipal();
         
+        // Vérifie si l'utilisateur est connecté sans que ses informations de profil aient encore été chargées.
         if (userPrincipal != null && session.getAttribute("userDetails") == null) {
             try (Connection conn = dataSource.getConnection();
                  PreparedStatement stmt = conn.prepareStatement(
@@ -55,13 +54,12 @@ public class IsLoginFilter extends HttpFilter implements Filter {
                 }
             } catch (SQLException e) {
             	e.printStackTrace();
+            	req.setAttribute("errorMessage", "Une erreur s'est produite lors de la récupération de vos informations.");
+				req.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
             }
         }
 
         chain.doFilter(request, response);
-	}
-
-	public void init(FilterConfig fConfig) throws ServletException {
 	}
 
 }

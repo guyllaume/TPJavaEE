@@ -22,16 +22,12 @@ public class CartService {
      * @throws ServletException Si le produit n'existe pas ou en cas d'erreur DB
      */
     public void addToCart(Cart cart, long productId, int quantity) throws ServletException {
-        try {
-            Product product = productService.getProductById(productId);
-            if (product == null) {
-                throw new ServletException("Le produit avec l'ID " + productId + " n'existe pas");
-            }
-            cart.addItem(product, quantity);
-            System.out.println("Produit " + product.getName() + " ajouté au panier. Quantité: " + quantity);
-        } catch (SQLException e) {
-            throw new ServletException("Erreur lors de l'ajout au panier", e);
-        }
+        Product product = productService.getProductById(productId);
+		if (product == null) {
+		    throw new ServletException("Le produit avec l'ID " + productId + " n'existe pas");
+		}
+		cart.addItem(product, quantity);
+		System.out.println("Produit " + product.getName() + " ajouté au panier. Quantité: " + quantity);
     }
 
     /**

@@ -1,11 +1,5 @@
 package org.cegep.gg.service;
 
-import java.util.Properties;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import org.cegep.gg.model.Cart;
 import org.cegep.gg.model.CartItem;
 
@@ -18,19 +12,26 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.Properties;
+
 public class EmailService {
     private final Session mailSession;
 
+    /**
+     * Initialise le service d'envoi d'email avec une session configurée.
+     * Utilise un serveur SMTP pour l'authentification et l'envoi.
+     */
     public EmailService() {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
-        
+
         final String username = "noreply.guyllaume@gmail.com";
         final String password = "dcxdxviuhhnawlec";
-        
+
+        // Création de la session mail avec authentification
         mailSession = Session.getInstance(props, new jakarta.mail.Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -38,28 +39,32 @@ public class EmailService {
             }
         });
     }
-    
+
+    /**
+     * Envoie un email de confirmation de compte après inscription.
+     * @param toEmail L'email du destinataire.
+     * @param name Le nom de l'utilisateur inscrit.
+     */
     public void sendConfirmationAccount(String toEmail, String name) {
         try {
             Message message = new MimeMessage(mailSession);
-            // Get from email from session properties (matches context.xml)
             message.setFrom(new InternetAddress("noreply.guyllaume@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
             message.setSubject("Welcome to CardRoyalty!");
 
-            // Create HTML content
+            // Contenu HTML du message
             String htmlContent = String.format("""
                 <html>
                 <body>
-                    <h2>Bienvenue CardRoyalty, %s!</h2>
+                    <h2>Bienvenue chez CardRoyalty, %s!</h2>
                     <p>Merci d'avoir choisi CardRoyalty.</p>
-                    <p>Vous pouvez maintenant utiliser CardRoyalty pour:</p>
+                    <p>Vous pouvez maintenant :</p>
                     <ul>
                         <li>Visiter notre catalogue</li>
                         <li>Faire des achats</li>
                         <li>Modifier votre profil</li>
                     </ul>
-                    <p>Si vous avez des questions n'hesitez pas a nous contacter</p>
+                    <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
                 </body>
                 </html>
                 """, name);
@@ -68,13 +73,17 @@ public class EmailService {
             Transport.send(message);
 
         } catch (MessagingException e) {
-            // Log the error but don't stop the signup process
+            // Log l'erreur mais ne stoppe pas le processus
             e.printStackTrace();
-            // Optionally: log.error("Failed to send confirmation email", e);
         }
     }
     
+    /**
+     * Envoie un email de confirmation de commande avec les détails.
+     * @param request La requête HTTP contenant les données de la commande.
+     */
     public void sendCheckoutConfirmation(HttpServletRequest request) {
+    	// Récupération des informations du formulaire
     	String prenom = request.getParameter("prenom");
     	String nom = request.getParameter("nom");
     	String telephone = request.getParameter("telephone");
@@ -97,8 +106,8 @@ public class EmailService {
     	
     	Cart cart = (Cart) request.getSession().getAttribute("cart");
     	Double totalAmountPaid = cart.getTotal();
-    	
-    	// Build the product list as an HTML table
+
+        // Construction de la liste des produits en HTML
         StringBuilder productListHtml = new StringBuilder();
         productListHtml.append("<table style='width:100%; border-collapse: collapse;'>")
                        .append("<thead>")
@@ -110,7 +119,7 @@ public class EmailService {
                        .append("</thead>")
                        .append("<tbody>");
 
-        for (CartItem item : cart.getItems()) { // Assuming `CartItem` represents items in the cart
+        for (CartItem item : cart.getItems()) {
             productListHtml.append("<tr>")
                            .append(String.format("<td style='border: 1px solid #ddd; padding: 8px;'>%s</td>", item.getProduct().getName()))
                            .append(String.format("<td style='border: 1px solid #ddd; padding: 8px;'>%.2f $</td>", item.getTotalPrice()))
@@ -122,12 +131,11 @@ public class EmailService {
     	
         try {
             Message message = new MimeMessage(mailSession);
-            // Get from email from session properties (matches context.xml)
             message.setFrom(new InternetAddress("noreply.guyllaume@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(courriel));
             message.setSubject("Welcome to CardRoyalty!");
 
-            // Create HTML content
+            // Contenu HTML du message
             String htmlContent = String.format("""
                 <html lang="en">
 				<head>
@@ -233,9 +241,7 @@ public class EmailService {
             Transport.send(message);
 
         } catch (MessagingException e) {
-            // Log the error but don't stop the signup process
             e.printStackTrace();
-            // Optionally: log.error("Failed to send confirmation email", e);
         }
     }
 }
