@@ -44,7 +44,7 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Membre Pages</web-resource-name>
-			<url-pattern>/member/*</url-pattern>
+			<url-pattern>/auth/membre/*</url-pattern>
 			<url-pattern>/checkout/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
