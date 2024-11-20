@@ -8,11 +8,11 @@
     <title>Mon Panier - CardRoyalty</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/styles.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/stylesCart.css">
-
 </head>
 <body>
     <%@ include file="../components/header.jsp" %>
     <div class="main-container">
+        <%@ include file="../components/sidebar.jsp" %>
         <div class="cart-container">
             <div class="cart-header">
                 <h1>Mon Panier</h1>
@@ -179,8 +179,7 @@
         }
 
         function checkout() {
-            // À implémenter plus tard
-            alert('La fonction de paiement non disponible pour le moment');
+        	window.location.href = "${pageContext.request.contextPath}/checkout";
         }
     </script>
 </body>

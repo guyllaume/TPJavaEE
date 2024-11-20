@@ -44,7 +44,8 @@
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Membre Pages</web-resource-name>
-			<url-pattern>/membre/*</url-pattern>
+			<url-pattern>/auth/membre/*</url-pattern>
+			<url-pattern>/checkout/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>MEMBRE</role-name>
@@ -69,9 +70,19 @@
 	<session-config>
 	    <session-timeout>30</session-timeout>
 	</session-config>
+	
 
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>
-		<location>/WEB-INF/views/err-globale.jsp</location>
+		<location>/WEB-INF/views/error.jsp</location>
+	</error-page>
+	<error-page>
+	    <error-code>404</error-code>
+	    <location>/WEB-INF/views/error.jsp</location>
+	</error-page>
+	
+	<error-page>
+	    <error-code>500</error-code>
+	    <location>/WEB-INF/views/error.jsp</location>
 	</error-page>
 </web-app>
