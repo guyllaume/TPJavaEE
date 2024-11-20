@@ -29,19 +29,20 @@ public class GetCategoriesFilter extends HttpFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+    	super.init(filterConfig);
+        if (dataSource == null) {
+            throw new ServletException("DataSource est null dans AuthController");
+        }
         this.productService = new ProductService(dataSource);
     }
 
+    //Set les categories pour toutes les pages puisque le sidebar est présent sur toute les pages ou presque.
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-    	System.out.println("Getting categories");
         List<Category> categories = productService.getAllCategories();
-        System.out.println(categories);
-        System.out.println(categories.size());
         request.setAttribute("categories", categories);
 
-        System.out.println(request.getAttribute("categories"));
         chain.doFilter(request, response);
     }
 

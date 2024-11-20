@@ -13,8 +13,13 @@
     <div class="main-container">
         <%@ include file="../components/sidebar.jsp" %>
         <div class="content">
-            <h1>Résultats de recherche</h1>
+            <h1 class="resultat-title">Résultats de recherche</h1>
             <main class="product-grid">
+            	<c:if test="${not empty error}">
+					<div class="errors">
+						<div class="error-message">${error}</div>
+					</div>
+				</c:if>
                 <c:forEach items="${products}" var="product">
 				    <div class="product-card">
 				        <img src="${pageContext.request.contextPath}/uploads/${product.imageUrl}" alt="${product.name}">

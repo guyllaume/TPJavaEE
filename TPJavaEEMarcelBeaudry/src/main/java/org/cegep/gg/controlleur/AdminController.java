@@ -26,31 +26,33 @@ import org.cegep.gg.service.ProductService;
 @WebServlet("/admin/*")
 public class AdminController extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
     private ProductService productService;
 
-    @Resource(name="jdbc/cegep_gg_bd_tp")
+    @Resource(name = "jdbc/cegep_gg_bd_tp")
     private DataSource dataSource;
 
+	// Initialisation du service
     @Override
     public void init() throws ServletException {
         super.init();
-        try {
-            productService = new ProductService(dataSource);
-        } catch (Exception e) {
-            throw new ServletException("Erreur lors de l'initialisation du ProductService", e);
+        if (dataSource == null) {
+            throw new ServletException("DataSource est null dans AdminController");
         }
+        productService = new ProductService(dataSource);
     }
 
+    // Méthode pour traiter les requêtes GET
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = request.getPathInfo();
-
-        if (path == null || path.equals("/")) {
-            forwardToDashboard(request, response);
-            return;
-        }
-
         try {
+	        String path = request.getPathInfo();
+	
+	        if (path == null || path.equals("/")) {
+	            forwardToDashboard(request, response);
+	            return;
+	        }
+
             switch (path) {
                 case "/categories":
                     displayCategories(request, response);
@@ -58,20 +60,21 @@ public class AdminController extends HttpServlet {
                 case "/produits":
                     displayProducts(request, response);
                     break;
-                default:
+                default: // 404
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     break;
             }
         } catch (Exception e) {
-            handleError(response, e);
+            handleError(request ,response, e); // A revoir
         }
     }
 
+    // Méthode pour traiter les requêtes POST
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = request.getPathInfo();
-
+    	// Gestion des erreurs
         try {
+        	String path = request.getPathInfo();
             switch (path) {
                 case "/categorie/add":
                     addCategory(request, response);
@@ -91,29 +94,30 @@ public class AdminController extends HttpServlet {
                 case "/produit/delete":
                     deleteProduct(request, response);
                     break;
-                default:
+                default: // 404
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     break;
             }
         } catch (Exception e) {
-            handleError(response, e);
+            handleError(request ,response, e); // A revoir
         }
     }
 
+    // Redirige vers la page du tableau de bord
     private void forwardToDashboard(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/views/admin/dashboard.jsp").forward(request, response);
     }
 
+    // Affiche la liste des catégories
     private void displayCategories(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //Can be removed since filter does it
-    	List<Category> categories = productService.getAllCategories();
+        List<Category> categories = productService.getAllCategories();
         request.setAttribute("categories", categories);
         request.getRequestDispatcher("/WEB-INF/views/admin/categories.jsp").forward(request, response);
     }
 
+    // Affiche la liste des produits
     private void displayProducts(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Product> products = productService.getAllProducts();
-        //Can be removed since filter does it
         List<Category> categories = productService.getAllCategories();
 
         request.setAttribute("products", products);
@@ -121,7 +125,8 @@ public class AdminController extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/admin/produits.jsp").forward(request, response);
     }
 
-    private void addCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Ajoute une nouvelle catégorie
+    private void addCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String name = request.getParameter("nom");
         String description = request.getParameter("description");
 
@@ -129,7 +134,8 @@ public class AdminController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/categories");
     }
 
-    private void editCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Modifie une catégorie existante
+    private void editCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
         String name = request.getParameter("nom");
         String description = request.getParameter("description");
@@ -138,75 +144,87 @@ public class AdminController extends HttpServlet {
         response.sendRedirect(request.getContextPath() + "/admin/categories");
     }
 
-    private void deleteCategory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Supprime une catégorie
+    private void deleteCategory(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         int id = Integer.parseInt(request.getParameter("id"));
 
         productService.deleteCategory(id);
         response.sendRedirect(request.getContextPath() + "/admin/categories");
     }
 
+    // Ajoute un nouveau produit
+    private void addProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String name = request.getParameter("nom");
+        String categoryId = request.getParameter("categorie");
+        String price = request.getParameter("prix");
+        try {
+			Double.parseDouble(price);
+		} catch (NumberFormatException e) {
+			request.setAttribute("error", "Le prix doit etre un nombre");
+			displayProducts(request, response);
+			return;
+		}
+        String imagePath = uploadImage(request);
 
-	 // Product CRUD Methods
-	 private void addProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	     String name = request.getParameter("nom");
-	     String categoryId = request.getParameter("categorie");
-	     String price = request.getParameter("prix");
-	     String imagePath = uploadImage(request);
-	
-	     productService.addProduct(name, categoryId, price, imagePath);
-	     response.sendRedirect(request.getContextPath() + "/admin/produits");
-	 }
-	
-	 private void editProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	     int productId = Integer.parseInt(request.getParameter("id"));
-	     String name = request.getParameter("nom");
-	     String categoryId = request.getParameter("categorie");
-	     String price = request.getParameter("prix");
-	     String imagePath = uploadImage(request); // Update image if a new file is uploaded
-	
-	     productService.updateProduct(productId, name, categoryId, price, imagePath);
-	     response.sendRedirect(request.getContextPath() + "/admin/produits");
-	 }
-	
-	 private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
-	     int productId = Integer.parseInt(request.getParameter("id"));
-	
-	     productService.deleteProduct(productId);
-	     response.sendRedirect(request.getContextPath() + "/admin/produits");
-	 }
-	
-	 // Utility method to handle file upload (e.g., for product images)
-	 private String uploadImage(HttpServletRequest request) throws Exception {
-	     Part filePart = request.getPart("image");
-	     if (filePart != null && filePart.getSize() > 0) {
-	         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-	         String uploadDir = "C:\\uploads\\TPJavaEEMarcelBeaudry";
-	         File uploadDirectory = new File(uploadDir);
-	         if (!uploadDirectory.exists()) {
-	             uploadDirectory.mkdirs();
-	         }
-	         File uploadFile = new File(uploadDir, fileName);
-	         System.out.println("uploadFile: " + uploadFile);
-	         System.out.println("uploadFile.exists(): " + uploadFile.exists());
-	         System.out.println("uploadDir: " + uploadDir);
-	         
-	         // Save the uploaded file
-	         try (InputStream input = filePart.getInputStream()) {
-	             Files.copy(input, uploadFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-	         }
-	         return fileName;
-	     }
-	     return null; // or return existing image path if no new image is uploaded
-	 }
+        productService.addProduct(name, categoryId, price, imagePath);
+        response.sendRedirect(request.getContextPath() + "/admin/produits");
+    }
 
-    private void handleError(HttpServletResponse response, Exception e) throws IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.getWriter().println("<html><body>");
-        response.getWriter().println("<h1>Erreur serveur</h1>");
-        response.getWriter().println("<p>Type d'erreur : " + e.getClass().getName() + "</p>");
-        response.getWriter().println("<p>Message : " + e.getMessage() + "</p>");
-        response.getWriter().println("<h2>Stack Trace:</h2><pre>");
-        e.printStackTrace(response.getWriter());
-        response.getWriter().println("</pre></body></html>");
+    // Modifie un produit existant
+    private void editProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int productId = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("nom");
+        String categoryId = request.getParameter("categorie");
+        String price = request.getParameter("prix");
+        try {
+			Double.parseDouble(price);
+		} catch (NumberFormatException e) {
+			request.setAttribute("error", "Le prix doit etre un nombre");
+			displayProducts(request, response);
+			return;
+		}
+        String imagePath = uploadImage(request);
+
+        productService.updateProduct(productId, name, categoryId, price, imagePath);
+        response.sendRedirect(request.getContextPath() + "/admin/produits");
+    }
+
+    // Supprime un produit
+    private void deleteProduct(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int productId = Integer.parseInt(request.getParameter("id"));
+
+        productService.deleteProduct(productId);
+        response.sendRedirect(request.getContextPath() + "/admin/produits");
+    }
+
+    // Télécharge une image et retourne le chemin d'accès
+    private String uploadImage(HttpServletRequest request) throws Exception {
+        Part filePart = request.getPart("image");
+        if (filePart != null && filePart.getSize() > 0) {
+            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            String uploadDir = "C:\\uploads\\TPJavaEEMarcelBeaudry";
+            File uploadDirectory = new File(uploadDir);
+            if (!uploadDirectory.exists()) {
+                uploadDirectory.mkdirs();
+            }
+
+            File uploadFile = new File(uploadDir, fileName);
+
+            // Enregistre le fichier téléchargé
+            try (InputStream input = filePart.getInputStream()) {
+                Files.copy(input, uploadFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            return fileName;
+        }
+        return null;
+    }
+
+    // Gère les erreurs et affiche des informations utiles
+    private void handleError(HttpServletRequest request ,HttpServletResponse response, Exception e) throws ServletException, IOException {
+        // Log the error details for debugging purposes
+        e.printStackTrace();
+
+        // Forward the request to the generalized error page
+        request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
     }
 }
