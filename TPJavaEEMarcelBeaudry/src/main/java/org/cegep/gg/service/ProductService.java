@@ -213,6 +213,35 @@ public class ProductService {
 	    }
 	    return products;
 	}
+	// méthode searchProducts pour la barre de recherche
+	public List<Product> searchProducts(String query) throws SQLException {
+	    List<Product> products = new ArrayList<>();
+	    String sql = "SELECT p.*, c.description AS category_description FROM products p " +
+	                 "JOIN categories c ON p.categories_id = c.id " +
+	                 "WHERE p.name LIKE ? OR c.description LIKE ?";
+	    
+	    try (Connection conn = dataSource.getConnection();
+	         PreparedStatement ps = conn.prepareStatement(sql)) {
+	        ps.setString(1, "%" + query + "%");
+	        ps.setString(2, "%" + query + "%");
+	        
+	        try (ResultSet rs = ps.executeQuery()) {
+	            while (rs.next()) {
+	                Product product = new Product();
+	                product.setId(rs.getLong("id"));
+	                product.setName(rs.getString("name"));
+	                product.setPrice(rs.getDouble("price"));
+	                product.setImageUrl(rs.getString("image_url"));
+	                product.setCategory_id(rs.getLong("categories_id"));
+	                product.setCategoryDescription(rs.getString("category_description"));
+	                products.add(product);
+	            }
+	        }
+	    }
+	    return products;
+	}
+
+
 
 
 }
