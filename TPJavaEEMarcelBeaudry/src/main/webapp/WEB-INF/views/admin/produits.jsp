@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,6 +48,11 @@ function editProduct(id, categorie, name, prix) {
     			</div>
     			<button id="submit" type="submit">Enregistrer</button>
     		</form>
+    		<c:if test="${not empty error}">
+				<div class="errors">
+					<div class="error-message">${error}</div>
+				</div>
+			</c:if>
     	</div>
         <div class="table-container">
             <table>
@@ -67,7 +73,7 @@ function editProduct(id, categorie, name, prix) {
 				            </c:forEach>
 				            </td>
 	            			<td>${produit.name}</td>
-	            			<td>${produit.price}$</td>
+	            			<td><fmt:formatNumber value="${produit.price}" type="number" minFractionDigits="2" maxFractionDigits="2" />$</td>
 	            			<td>${produit.imageUrl}</td>
 	            			<td class="categorie-options">
 							    <!-- Modifier Button -->

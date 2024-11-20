@@ -58,6 +58,8 @@ public class Cart {
     }
 
     public int getItemCount() { 
-        return items.size(); 
+        return items.stream()
+                .mapToInt(CartItem::getQuantity) 
+                .sum();
     }
 }
