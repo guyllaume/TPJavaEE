@@ -15,9 +15,8 @@ import org.cegep.gg.model.Product;
 import org.cegep.gg.service.ProductService;
 import javax.sql.DataSource;
 
-@WebServlet(name = "ProductServlet", urlPatterns = {"", "/index","/products", "/filterProducts" })
-//@WebServlet(name = "ProductServlet", urlPatterns = {"/products", "/filterProducts"})
 
+@WebServlet(name = "ProductServlet", urlPatterns = {"", "/index","/products", "/filterProducts" })
 public class ProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,17 +24,15 @@ public class ProductServlet extends HttpServlet {
 
     @Resource(name="jdbc/cegep_gg_bd_tp")
     private DataSource dataSource;
+    
     @Override
     public void init() throws ServletException {
         System.out.println("Initialisation de ProductServlet...");
     	super.init();
-        try {
-            productService = new ProductService(dataSource);
-        } catch (Exception e) {
-            System.err.println("Erreur lors de l'initialisation du ProductServlet:");
-            e.printStackTrace();
-            throw new ServletException(e);
-        }
+    	if (dataSource == null) {
+    		throw new ServletException("DataSource est null dans ProductServlet");
+    	}
+        productService = new ProductService(dataSource);
     }
 
     @Override

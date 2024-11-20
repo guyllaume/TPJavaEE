@@ -12,13 +12,19 @@
 		<c:otherwise>
 		    <div class="nav-links">
 		        <a href="<c:url value='/index'/>">Accueil</a> - 
-		        <a href="<c:url value='/contact'/>">contacter nous</a> 
+		        <a href="<c:url value='/contact'/>">contacter nous</a> - 
 		        <a href="<c:url value='/fr'/>">fr</a>
 		    </div>
 		    <div class="search">
+<<<<<<< HEAD
 		        <form action="${pageContext.request.contextPath}/search" method="GET">
 				    <input type="text" name="query" placeholder="Rechercher des produits..." >
 				    <button type="submit">Rechercher</button>
+=======
+		        <form action="${pageContext.request.contextPath}/search" method="GET" class="search-form">
+				    <input type="text" name="query" placeholder="Rechercher des produits..." class="search-input">
+				    <button type="submit" class="search-button">Rechercher</button>
+>>>>>>> branch 'Paul' of https://github.com/guyllaume/TPJavaEE.git
 				</form>
 
 		    </div>

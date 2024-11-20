@@ -29,7 +29,7 @@
         <%@ include file="../components/sidebar.jsp" %>
 		<div class="content">
 			<h1>Connexion</h1>
-			<form action="${pageContext.request.contextPath}/j_security_check" method="post">
+			<form action="${pageContext.request.contextPath}/j_security_check" method="post" class="connexion-form">
 			    <div class="form-group">
 				<label for="j_username">Courriel</label>
 				<input type="email" id="j_username" name="j_username" required>
