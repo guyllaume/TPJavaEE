@@ -74,8 +74,12 @@ a:hover{
 
 .sidebar ul{
 	list-style-type: none;
-	padding: 0;
+	padding: 0 1rem;
 	margin: 0;
+}
+
+.sidebar li{
+	margin-bottom: 0.75rem;
 }
 
 .main-container {
@@ -89,4 +93,49 @@ a:hover{
     color: white;
     padding: 1rem;
 	text-align: right;
+}
+
+.header .search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px auto;
+}
+
+.header .search-input {
+    width: 300px;
+    padding: 10px;
+    border: 2px solid #3A1541;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #3A1541; 
+    background-color: #f9f9f9;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.header .search-input:focus {
+    border-color: #6A2469; 
+    background-color: #fff;
+}
+
+/* Style for the search button */
+.header .search-button {
+    padding: 10px 15px;
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #6A2469;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header .search-button:hover {
+    background-color: #8B2B8F; 
+}
+.error-message{
+	color: #800000;
 }

@@ -157,6 +157,13 @@ public class AdminController extends HttpServlet {
         String name = request.getParameter("nom");
         String categoryId = request.getParameter("categorie");
         String price = request.getParameter("prix");
+        try {
+			Double.parseDouble(price);
+		} catch (NumberFormatException e) {
+			request.setAttribute("error", "Le prix doit etre un nombre");
+			displayProducts(request, response);
+			return;
+		}
         String imagePath = uploadImage(request);
 
         productService.addProduct(name, categoryId, price, imagePath);
@@ -169,6 +176,13 @@ public class AdminController extends HttpServlet {
         String name = request.getParameter("nom");
         String categoryId = request.getParameter("categorie");
         String price = request.getParameter("prix");
+        try {
+			Double.parseDouble(price);
+		} catch (NumberFormatException e) {
+			request.setAttribute("error", "Le prix doit etre un nombre");
+			displayProducts(request, response);
+			return;
+		}
         String imagePath = uploadImage(request);
 
         productService.updateProduct(productId, name, categoryId, price, imagePath);

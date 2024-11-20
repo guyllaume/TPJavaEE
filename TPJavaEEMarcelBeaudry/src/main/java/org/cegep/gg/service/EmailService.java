@@ -133,7 +133,7 @@ public class EmailService {
             Message message = new MimeMessage(mailSession);
             message.setFrom(new InternetAddress("noreply.guyllaume@gmail.com"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(courriel));
-            message.setSubject("Welcome to CardRoyalty!");
+            message.setSubject("Order Confirmation");
 
             // Contenu HTML du message
             String htmlContent = String.format("""

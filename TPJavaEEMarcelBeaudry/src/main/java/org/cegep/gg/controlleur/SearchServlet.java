@@ -55,7 +55,7 @@ public class SearchServlet extends HttpServlet {
         if (query == null || query.trim().isEmpty()) {
             request.setAttribute("error", "La requête de recherche ne peut pas être vide.");
             // Redirige vers la page des résultats avec un message d'erreur.
-            request.getRequestDispatcher("/searchResults.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/views/searchResults.jsp").forward(request, response);
             return;
         }
 
@@ -63,6 +63,12 @@ public class SearchServlet extends HttpServlet {
             // Recherche des produits correspondant à la requête.
             List<Product> products = productService.searchProducts(query.trim());
             
+            if (products.isEmpty()) {
+				request.setAttribute("error", "Aucun résultat de recherche n'a été trouvé.");
+				// Redirige vers la page des résultats avec un message d'erreur.
+				request.getRequestDispatcher("/WEB-INF/views/searchResults.jsp").forward(request, response);
+				return;
+			}
             // Ajoute la liste des produits comme attribut pour la vue.
             request.setAttribute("products", products);
             
