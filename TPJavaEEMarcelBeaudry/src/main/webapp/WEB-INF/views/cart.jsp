@@ -109,7 +109,6 @@
 	        .then(response => response.json())
 	        .then(data => {
 	            if (data.success) {
-	                alert('Quantité mise à jour avec succès');
 	                window.location.reload(); // Recharger la page pour voir les modifications
 	            } else {
 	                alert('Erreur : ' + data.error);
@@ -146,7 +145,6 @@
                         if (row) {
                             row.remove(); 
                         }
-                        alert('Produit retiré avec succès');
                         window.location.reload();
                     } else {
                         alert('Erreur : ' + data.error);

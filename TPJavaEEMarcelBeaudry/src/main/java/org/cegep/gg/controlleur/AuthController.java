@@ -114,6 +114,10 @@ public class AuthController extends HttpServlet {
         if (userService.updateUser(user)) {
             // Mise à jour réussie
             request.getSession().setAttribute("validationMessage", "Vos modifications ont bien été enregistrées");
+            Map<String, String> userDetails = new HashMap<>();
+            userDetails.put("prenom", user.getPrenom());
+            userDetails.put("nom", user.getNom());
+            request.getSession().setAttribute("userDetails", userDetails);
             response.sendRedirect(request.getContextPath() + "/index");
         } else {
             // Échec de la mise à jour
